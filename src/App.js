@@ -2,12 +2,14 @@ import React from 'react'
 import { AuthProvider } from './contexts/auth';
 import RoutesApp from './routes';
 import GlobalStyle from './styles/global';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const App = () => {
   return (
     <AuthProvider>
-      <RoutesApp />
+      <CssBaseline />
       <GlobalStyle />
+      <RoutesApp />
     </AuthProvider>
   )
 }

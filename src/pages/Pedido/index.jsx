@@ -2,7 +2,7 @@ import React from 'react';
 import Body from '../../components/Body/Body';
 import Box from '@mui/material/Box'
 
-const Home = () => {
+const Pedido = () => {
 
   return (
     <Body>
@@ -15,4 +15,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Pedido;
