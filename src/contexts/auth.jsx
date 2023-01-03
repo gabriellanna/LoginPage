@@ -4,10 +4,18 @@ export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
+    const [open, setOpen] = useState();
 
     useEffect(() => {
         const userToken = localStorage.getItem("user_token");
         const usersStorage = localStorage.getItem("users_db");
+        var menu = localStorage.getItem('menu')
+        if(menu == null){
+            localStorage.setItem('menu', false)
+            setOpen(false)
+        }else{
+            setOpen(menu === 'true'? true : false)
+        }
         if (userToken && usersStorage) {
             const hasUser = JSON.parse(usersStorage)?.filter(
                 (user) => user.email === JSON.parse(userToken).email
@@ -64,7 +72,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ user, signed: !!user, signin, signup, signout }}
+            value={{ user, signed: !!user, signin, signup, signout, open, setOpen}}
         >
             {children}
         </AuthContext.Provider>

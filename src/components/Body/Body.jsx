@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -14,12 +12,13 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import HomeIcon from '@mui/icons-material/Home';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import BottonMenu from '../Menu/menuPrincipal'
+import useAuth from '../../hooks/useAuth';
+import { Button } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
@@ -90,18 +89,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function Body({ children }) {
     const theme = useTheme();
-    const [open, setOpen] = React.useState();
-    const navigate = useNavigate();
-
-    React.useEffect(()=>{
-        var menu = localStorage.getItem('menu')
-        if(menu == null){
-            localStorage.setItem('menu', false)
-            setOpen(false)
-        }else{
-            setOpen(menu === 'true'? true : false)
-        }
-    },[])
+    const { open, setOpen, signout } = useAuth();
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -131,8 +119,10 @@ export default function Body({ children }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Mini variant drawer
+                        Clived Truck
                     </Typography>
+                    <div style={{display: 'flex', justifyContent: 'right', width: '85%'}}>
+                        <Button variant="contained" onClick={()=> signout()}><LogoutIcon /></Button></div>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -143,56 +133,14 @@ export default function Body({ children }) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['Home', 'Pedido', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            onClick={()=>navigate(`/${text.toLowerCase()}`)}>
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
+                   <BottonMenu Text='Inicio' Nav='home' Icon={<HomeIcon />} open={open}/>
+                   <BottonMenu Text='Pedidos' Nav='pedido' Icon={<FactCheckIcon />} open={open}/>
+                   <BottonMenu Text='Caminhões' Nav='caminhao' Icon={<LocalShippingIcon />} open={open}/>
                 </List>
                 <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
+               
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 1, paddingTop: '5%' }}>
                 {children}
             </Box>
         </Box>

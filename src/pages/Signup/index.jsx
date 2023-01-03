@@ -14,7 +14,9 @@ const Signup = () => {
 
   const { signup } = useAuth();
 
-  const handleSignup = () => {
+  const handleSignup = (event) => {
+    event.preventDefault();
+    
     if (!email | !emailConf | !senha) {
       setError("Preencha todos os campos");
       return;
@@ -36,35 +38,37 @@ const Signup = () => {
 
   return (
     <C.Container>
-      <C.Label>CLIVED REGISTER</C.Label>
-      <C.Content>
-        <Input
-          type="email"
-          placeholder="Digite seu E-mail"
-          value={email}
-          onChange={(e) => [setEmail(e.target.value), setError("")]}
-        />
-        <Input
-          type="email"
-          placeholder="Confirme seu E-mail"
-          value={emailConf}
-          onChange={(e) => [setEmailConf(e.target.value), setError("")]}
-        />
-        <Input
-          type="password"
-          placeholder="Digite sua Senha"
-          value={senha}
-          onChange={(e) => [setSenha(e.target.value), setError("")]}
-        />
-        <C.labelError>{error}</C.labelError>
-        <Button Text="Registrar" onClick={handleSignup} />
-        <C.LabelSignup>
-          Já tem uma conta?
-          <C.Strong>
-            <Link to="/signin">&nbsp;Login</Link>
-          </C.Strong>
-        </C.LabelSignup>
-      </C.Content>
+      <form onSubmit={handleSignup}>
+        <C.Label>CLIVED REGISTER</C.Label>
+        <C.Content>
+          <Input
+            type="email"
+            placeholder="Digite seu E-mail"
+            value={email}
+            onChange={(e) => [setEmail(e.target.value), setError("")]}
+          />
+          <Input
+            type="email"
+            placeholder="Confirme seu E-mail"
+            value={emailConf}
+            onChange={(e) => [setEmailConf(e.target.value), setError("")]}
+          />
+          <Input
+            type="password"
+            placeholder="Digite sua Senha"
+            value={senha}
+            onChange={(e) => [setSenha(e.target.value), setError("")]}
+          />
+          <C.labelError>{error}</C.labelError>
+          <Button Text="Registrar" Type='submit' />
+          <C.LabelSignup>
+            Já tem uma conta?
+            <C.Strong>
+              <Link to="/signin">&nbsp;Login</Link>
+            </C.Strong>
+          </C.LabelSignup>
+        </C.Content>
+      </form>
     </C.Container>
   );
 };

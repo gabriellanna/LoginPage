@@ -6,7 +6,7 @@ const Home = () => {
 
   return (
     <Body>
-      <Box sx={{marginTop: '4%'}}>
+      <Box>
         <p>
           Corpo da pagina
         </p>
