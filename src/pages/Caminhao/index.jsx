@@ -41,6 +41,7 @@ const CaminhaoPage = () => {
             setCaminhao(list)
         }
     }
+    
 
     return (
         <Body>

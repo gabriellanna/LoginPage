@@ -134,7 +134,7 @@ export default function Body({ children }) {
                 <Divider />
                 <List>
                    <BottonMenu Text='Inicio' Nav='home' Icon={<HomeIcon />} open={open}/>
-                   <BottonMenu Text='Pedidos' Nav='pedido' Icon={<FactCheckIcon />} open={open}/>
+                   <BottonMenu Text='Viagens' Nav='viagens' Icon={<FactCheckIcon />} open={open}/>
                    <BottonMenu Text='Caminhões' Nav='caminhao' Icon={<LocalShippingIcon />} open={open}/>
                 </List>
                 <Divider />
