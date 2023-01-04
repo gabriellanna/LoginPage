@@ -56,7 +56,7 @@ const ModalViagemCaminhao = () => {
             return;
         }
 
-    }, []);
+    }, [placa]);
 
 
 

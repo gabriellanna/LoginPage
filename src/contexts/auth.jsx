@@ -6,6 +6,8 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [open, setOpen] = useState();
 
+    const [placa, setPlaca] = useState();
+
     useEffect(() => {
         const userToken = localStorage.getItem("user_token");
         const usersStorage = localStorage.getItem("users_db");
@@ -72,7 +74,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ user, signed: !!user, signin, signup, signout, open, setOpen}}
+            value={{ user, signed: !!user, signin, signup, signout, open, setOpen, placa, setPlaca}}
         >
             {children}
         </AuthContext.Provider>
