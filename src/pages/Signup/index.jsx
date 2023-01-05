@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import Input from '../../components/Input';
-import { Button } from '../../import';
+import React, { useState, useEffect } from "react";
+import Input from "../../components/Input";
+import { Button } from "../../import";
 import * as C from "./styles";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from '../../hooks/useAuth';
+import useAuth from "../../hooks/useAuth";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +12,13 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const { signup } = useAuth();
+  const { signup, signed } = useAuth();
+
+  useEffect(() => {
+    if (signed) {
+      navigate("/");
+    }
+  });
 
   const handleSignup = (event) => {
     event.preventDefault();
@@ -64,9 +70,9 @@ const Signup = () => {
             color="success"
             variant="outlined"
             size="medium"
-            type='submit'
-          >
-            Registrar</Button>
+            type="submit">
+            Registrar
+          </Button>
           <C.LabelSignup>
             Já tem uma conta?
             <C.Strong>

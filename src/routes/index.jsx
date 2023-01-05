@@ -1,36 +1,58 @@
-import { Fragment } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import Pedido from "../pages/Pedido";
 import Signin from "../pages/Signin";
 import Signup from "../pages/Signup";
-import useAuth from "../hooks/useAuth";
 import CaminhaoPage from "../pages/Caminhao";
 import ViagensPage from "../pages/Viagens";
-
-const Private = ({ Item }) => {
-    const { signed } = useAuth();
-
-    return signed ? <Item /> : <Signin />;
-};
-
+import { AuthProvider, Private } from "../contexts/auth";
 
 const RoutesApp = () => {
-    return (
-        <BrowserRouter>
-            <Fragment>
-                <Routes>
-                    <Route exact path="/home" element={<Private Item={Home} />} />
-                    <Route exact path="/pedido" element={<Private Item={Pedido} />} />
-                    <Route exact path="/caminhao" element={<Private Item={CaminhaoPage} />} />
-                    <Route exact path="/viagens" element={<Private Item={ViagensPage} />} />
-                    <Route path="/" element={<Private Item={Home} />} />
-                    <Route exact path="/signup" element={<Signup />} />
-                    <Route path="*" element={<Private Item={Home} />} />
-                </Routes>
-            </Fragment>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route
+            exact
+            path="/pedido"
+            element={
+              <Private>
+                <Pedido />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/caminhao"
+            element={
+              <Private>
+                <CaminhaoPage />
+              </Private>
+            }
+          />
+          <Route
+            exact
+            path="/viagens"
+            element={
+              <Private>
+                <ViagensPage />
+              </Private>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <Private>
+                <Home />
+              </Private>
+            }
+          />
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/signin" element={<Signin />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
 };
 
 export default RoutesApp;
