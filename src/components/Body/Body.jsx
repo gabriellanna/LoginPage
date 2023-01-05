@@ -19,6 +19,7 @@ import BottonMenu from '../Menu/menuPrincipal'
 import useAuth from '../../hooks/useAuth';
 import { Button } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AccountMenu from '../DropList';
 
 const drawerWidth = 240;
 
@@ -105,7 +106,7 @@ export default function Body({ children }) {
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppBar position="fixed" open={open}>
-                <Toolbar>
+                <Toolbar style={{ display: 'fixed', justifyContent: 'space-between' }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -121,8 +122,10 @@ export default function Body({ children }) {
                     <Typography variant="h6" noWrap component="div">
                         Clived Truck
                     </Typography>
-                    <div style={{display: 'flex', justifyContent: 'right', width: '85%'}}>
-                        <Button variant="contained" onClick={()=> signout()}><LogoutIcon /></Button></div>
+                    <div>
+                        <AccountMenu />
+                        
+                    </div>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -133,14 +136,14 @@ export default function Body({ children }) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                   <BottonMenu Text='Inicio' Nav='home' Icon={<HomeIcon />} open={open}/>
-                   <BottonMenu Text='Viagens' Nav='viagens' Icon={<FactCheckIcon />} open={open}/>
-                   <BottonMenu Text='Caminhões' Nav='caminhao' Icon={<LocalShippingIcon />} open={open}/>
+                    <BottonMenu Text='Inicio' Nav='home' Icon={<HomeIcon />} open={open} />
+                    <BottonMenu Text='Viagens' Nav='viagens' Icon={<FactCheckIcon />} open={open} />
+                    <BottonMenu Text='Caminhões' Nav='caminhao' Icon={<LocalShippingIcon />} open={open} />
                 </List>
                 <Divider />
-               
+
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 1, paddingTop: '5%' }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 1, marginTop: '8vh' }}>
                 {children}
             </Box>
         </Box>

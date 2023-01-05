@@ -26,42 +26,14 @@ import useAuth from '../../hooks/useAuth';
 
 
 const ViagensPage = () => {
-    const { setPlaca } = useAuth();
 
     const [open1, setOpen1] = React.useState(false);
-    const [open2, setOpen2] = React.useState(false)
+    const [placa, setPlaca] = React.useState(false);
+    const [visible, setVisible] = React.useState('none');
 
     const handleOpen1 = () => setOpen1(true);
-    const handleOpen2 = () => setOpen2(true);
     const handleClose1 = () => setOpen1(false);
-    const handleClose2 = () => setOpen2(false);
     const [viagem, setViagem] = React.useState();
-
-
-
-    const BottonCaminhao = () => {       
-        const getStorage = JSON.parse(localStorage.getItem("caminhao_db"))
-        const hasPlaca = getStorage?.filter((c) => c.placa === viagem.placa);
-        const getPlaca = getStorage.placa
-
-
-        const onClick2 = () => {
-            console.log(hasPlaca);
-            handleOpen2();
-            /*setPlaca(getPlaca)*/
-        }
-        return (
-            <>
-            <ButtonCaminhaoViagem Text='' onClick={onClick2} Icon={<LocalShippingIcon />} /><Modal
-                open={open2}
-                onClose={handleClose2}
-            >
-                <ModalViagemCaminhao />
-            </Modal>
-            </>
-        );
-    };
-
 
     const IconViagemStyle = {
         width: '30px',
@@ -87,6 +59,12 @@ const ViagensPage = () => {
             localStorage.setItem('viagem_db', JSON.stringify(list));
             setViagem(list)
         }
+    }
+
+    const handleModal = (id) => {
+
+        setPlaca(id);
+        setVisible('visible')
     }
 
     return (
@@ -117,11 +95,10 @@ const ViagensPage = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-
                             {viagem?.map((row) => (
                                 <TableRow key={row.placa}>
-                                    <TableCell scope="row"><BottonCaminhao />{row.rotas}<br /><PinDropIcon style={IconViagemStyle} /></TableCell>
-                                    <TableCell align="center">{row.placa}</TableCell>
+                                    <TableCell scope="row"><PinDropIcon style={IconViagemStyle} />{row.rotas}</TableCell>
+                                    <TableCell align="center">{row.placa}<Button onClick={() => handleModal(row.placa)}><LocalShippingIcon /></Button></TableCell>
                                     <TableCell align="center">{row.desvioMaximo}</TableCell>
                                     <TableCell align="center">{row.volume} m</TableCell>
                                     <TableCell align="center">{row.altura} m</TableCell>
@@ -132,6 +109,7 @@ const ViagensPage = () => {
                                 </TableRow>
                             ))}
                         </TableBody>
+                        <ModalViagemCaminhao display={visible} placa={placa}/>
                     </Table>
                 </TableContainer>
             </ContentBar>

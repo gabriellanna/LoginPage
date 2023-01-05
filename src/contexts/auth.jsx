@@ -1,80 +1,64 @@
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {api, createUser, createSession } from '../services/api'
 
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
+    const navigate = useNavigate();
+
     const [user, setUser] = useState();
     const [open, setOpen] = useState();
-
-    const [placa, setPlaca] = useState();
+    const [token, setToken] = useState();
 
     useEffect(() => {
-        const userToken = localStorage.getItem("user_token");
-        const usersStorage = localStorage.getItem("users_db");
+        const token = localStorage.getItem("user_token");
+
+        const hasUser = localStorage.getItem("users_db");
+        if (hasUser) {
+            setUser(JSON.parse(hasUser));
+        }
         var menu = localStorage.getItem('menu')
+
+
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
         if(menu == null){
             localStorage.setItem('menu', false)
             setOpen(false)
         }else{
             setOpen(menu === 'true'? true : false)
         }
-        if (userToken && usersStorage) {
-            const hasUser = JSON.parse(usersStorage)?.filter(
-                (user) => user.email === JSON.parse(userToken).email
-            );
-            if (hasUser) setUser(hasUser[0]);
-        }
     }, []);
 
-    const signin = (email, password) => {
-        const usersStorage = JSON.parse(localStorage.getItem("users_db"));
-
-        const hasUser = usersStorage?.filter((user) => user.email === email);
-
-        if (hasUser?.length) {
-            if (hasUser[0].email === email && hasUser[0].password === password) {
-                const token = Math.random().toString(36).substring(2);
-                localStorage.setItem("user_token", JSON.stringify({ email, token}));
-                setUser({ email, password });
-                return;
-            } else {
-                return "E-mail ou senha incorretos";
-            }
-        } else {
-            return "Usuário não cadastrado";
-        }
+    const signin = async (email, password) => {
+        const hasUser = await createSession(email, password)
+                .catch(function (err){
+                    const erro = err.response.data.split('at')[0].split('System.Exception:')[1]
+                    alert(erro)});
+        localStorage.setItem("user_token",hasUser.accessToken)
+        localStorage.setItem("user_dados",JSON.stringify(hasUser.dados))
+        setUser(hasUser.dados)
+        setUser(hasUser.accessToken)
     };
 
-    const signup = (email, password) => {
-        const usersStorage = JSON.parse(localStorage.getItem("users_db"));
+    const signup = async (email, password) => {
 
-        const hasUser = usersStorage?.filter((user) => user.email === email);
-
-        if (hasUser?.length) {
-            return "Já tem uma conta com esse E-mail";
-        }
-
-        let newUser;
-
-        if (usersStorage) {
-            newUser = [...usersStorage, { email, password }];
-        } else {
-            newUser = [{ email, password }];
-        }
-
-        localStorage.setItem("users_db", JSON.stringify(newUser));
-
-        return;
+        await createUser(email, password).catch(function(err){alert(err)})
+        navigate('/');
     };
 
     const signout = () => {
         setUser(null);
+        setToken(null);
         localStorage.removeItem("user_token");
+        localStorage.removeItem("user_dados");
+
     };
 
     return (
         <AuthContext.Provider
-            value={{ user, signed: !!user, signin, signup, signout, open, setOpen, placa, setPlaca}}
+            value={{ user, signed: !!user, signin, signup, signout, open, setOpen }}
         >
             {children}
         </AuthContext.Provider>

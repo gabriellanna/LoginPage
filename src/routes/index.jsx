@@ -11,7 +11,7 @@ import ViagensPage from "../pages/Viagens";
 const Private = ({ Item }) => {
     const { signed } = useAuth();
 
-    return signed > 0 ? <Item /> : <Signin />;
+    return signed ? <Item /> : <Signin />;
 };
 
 
