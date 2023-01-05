@@ -16,7 +16,6 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 
 
-
 const CaminhaoPage = () => {
 
     const [open, setOpen] = React.useState(false);

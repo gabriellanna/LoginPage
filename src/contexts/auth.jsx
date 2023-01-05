@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState();
+  const [ativarEffect,setAtivarEffect] = useState(1);
 
   useEffect(() => {
     const recoveredUser = localStorage.getItem("user");
@@ -27,7 +28,10 @@ export const AuthProvider = ({ children }) => {
     }
 
     setLoading(false);
-  }, []);
+    console.log("Loading:"+loading);
+  }, [ativarEffect]);
+
+
 
   const signin = async (email, senha) => {
     setLoading(true);
@@ -47,7 +51,10 @@ export const AuthProvider = ({ children }) => {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       setUser(loggedUser);
+      console.log("Login: "+loading);
       navigate("/");
+      console.log("Navigate: "+navigate());
+      setAtivarEffect(ativarEffect + 1);
     }
   };
 
@@ -83,6 +90,8 @@ export const AuthProvider = ({ children }) => {
 
 export const Private = ({ children }) => {
   const { signed, loading } = useContext(AuthContext);
+
+  console.log("Private: "+loading);
   if (loading) {
     return <div className="loding">Carregando...</div>;
   }

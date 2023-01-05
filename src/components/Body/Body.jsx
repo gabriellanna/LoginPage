@@ -15,9 +15,11 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HomeIcon from "@mui/icons-material/Home";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import BottonMenu from "../Menu/menuPrincipal";
 import AccountMenu from "../DropList";
 import useAuth from "../../hooks/useAuth";
+
 
 const drawerWidth = 240;
 
@@ -147,6 +149,12 @@ export default function Body({ children }) {
             Text="Caminhões"
             Nav="caminhao"
             Icon={<LocalShippingIcon />}
+            open={open}
+          />
+          <BottonMenu
+            Text="Mensagens"
+            Nav="mensagens"
+            Icon={<MessageOutlinedIcon />}
             open={open}
           />
         </List>
